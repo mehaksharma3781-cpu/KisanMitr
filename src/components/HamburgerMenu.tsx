@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { playClickSound } from '@/hooks/useClickSound';
+import kisanMitrLogo from '@/assets/kisanmitr-logo.png';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -65,9 +66,11 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-              <Sprout className="w-5 h-5" />
-            </div>
+            <img 
+              src={kisanMitrLogo} 
+              alt="KisanMitr Logo" 
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <div>
               <h2 className="font-bold text-lg">KisanMitr</h2>
               <p className="text-xs text-primary-foreground/70">{t('ai_prototype')}</p>

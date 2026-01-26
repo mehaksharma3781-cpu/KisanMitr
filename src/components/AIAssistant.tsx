@@ -219,7 +219,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
               {message.role === 'assistant' && (
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-medium text-primary">Gemini AI</span>
+                  <span className="text-xs font-medium text-primary">KisanMitr AI</span>
                 </div>
               )}
               <p className="text-sm leading-relaxed">{message.content}</p>
