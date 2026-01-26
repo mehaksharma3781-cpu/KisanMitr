@@ -8,7 +8,14 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LanguageSelection from "./pages/LanguageSelection";
 import Login from "./pages/Login";
 import ProfileSetup from "./pages/ProfileSetup";
-import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import CropAdvisor from "./pages/CropAdvisor";
+import Schemes from "./pages/Schemes";
+import Community from "./pages/Community";
+import OutcomeTracker from "./pages/OutcomeTracker";
+import Weather from "./pages/Weather";
+import AIAssistantPage from "./pages/AIAssistantPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,7 +58,63 @@ const AppRoutes = () => {
         path="/dashboard" 
         element={
           <ProfileRequired>
-            <Dashboard />
+            <Home />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/profile" 
+        element={
+          <ProfileRequired>
+            <Profile />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/crop-advisor" 
+        element={
+          <ProfileRequired>
+            <CropAdvisor />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/schemes" 
+        element={
+          <ProfileRequired>
+            <Schemes />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/community" 
+        element={
+          <ProfileRequired>
+            <Community />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/outcome-tracker" 
+        element={
+          <ProfileRequired>
+            <OutcomeTracker />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/weather" 
+        element={
+          <ProfileRequired>
+            <Weather />
+          </ProfileRequired>
+        } 
+      />
+      <Route 
+        path="/ai-assistant" 
+        element={
+          <ProfileRequired>
+            <AIAssistantPage />
           </ProfileRequired>
         } 
       />

@@ -15,6 +15,7 @@ interface AuthContextType {
   login: (email: string, password: string) => boolean;
   logout: () => void;
   saveProfile: (profile: FarmerProfile) => void;
+  updateProfile: (profile: Partial<FarmerProfile>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,6 +47,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setHasProfile(true);
   };
 
+  const updateProfile = (updates: Partial<FarmerProfile>) => {
+    if (profile) {
+      setProfile({ ...profile, ...updates });
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       isAuthenticated, 
@@ -53,7 +60,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       profile, 
       login, 
       logout, 
-      saveProfile 
+      saveProfile,
+      updateProfile
     }}>
       {children}
     </AuthContext.Provider>
