@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { playClickSound } from '@/hooks/useClickSound';
-import kisanMitrLogo from '@/assets/kisanmitr-logo.png';
+import kisanMitrLogo from '@/assets/kisanmitr-logo-new.png';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
