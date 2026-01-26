@@ -98,7 +98,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
 
   const toggleListening = () => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      alert('Speech recognition is not supported in your browser.');
+      alert(language === 'hi' 
+        ? 'आपके ब्राउज़र में वॉइस इनपुट समर्थित नहीं है।' 
+        : 'Voice input is not supported in your browser.');
       return;
     }
 
@@ -111,7 +113,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
     const recognition = new SpeechRecognition();
     recognition.lang = language === 'hi' ? 'hi-IN' : 'en-IN';
     recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.interimResults = true;
 
     recognition.onstart = () => setIsListening(true);
     recognition.onend = () => setIsListening(false);
@@ -119,10 +121,53 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
 
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
+      const isFinal = event.results[0].isFinal;
       setInput(transcript);
+      
+      // Auto-send when speech is final
+      if (isFinal && transcript.trim()) {
+        setTimeout(() => {
+          handleSendVoice(transcript);
+        }, 300);
+      }
     };
 
     recognition.start();
+  };
+
+  const handleSendVoice = async (voiceInput: string) => {
+    if (!voiceInput.trim()) return;
+    setIsListening(false);
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: voiceInput,
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsLoading(true);
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const responseContent = await simulateAIResponse(voiceInput);
+    
+    const assistantMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: responseContent,
+    };
+
+    setMessages(prev => [...prev, assistantMessage]);
+    setIsLoading(false);
+
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(responseContent);
+      utterance.lang = language === 'hi' ? 'hi-IN' : 'en-IN';
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      speechSynthesis.speak(utterance);
+    }
   };
 
   const stopSpeaking = () => {
@@ -198,17 +243,51 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
 
       {/* Input Area */}
       <div className="p-4 border-t border-border bg-card">
+        {/* Voice Input Prompt - More Prominent */}
+        {!isListening && !input && (
+          <div className="text-center mb-4">
+            <p className="text-sm text-muted-foreground">
+              {language === 'hi' ? '🎤 बोलने के लिए माइक दबाएं या टाइप करें' : '🎤 Tap mic to speak or type below'}
+            </p>
+          </div>
+        )}
+
+        {/* Listening Animation */}
+        {isListening && (
+          <div className="flex flex-col items-center justify-center py-6 mb-4 bg-primary/10 rounded-2xl animate-pulse">
+            <div className="relative">
+              <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center animate-ping absolute inset-0" />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center relative">
+                <Mic className="w-10 h-10 text-primary-foreground" />
+              </div>
+            </div>
+            <p className="text-lg font-bold text-primary mt-4">
+              {language === 'hi' ? '🎤 सुन रहा हूं...' : '🎤 Listening...'}
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {language === 'hi' ? 'अपना सवाल बोलें' : 'Speak your question'}
+            </p>
+            {input && (
+              <p className="text-sm text-foreground mt-2 px-4 py-2 bg-muted rounded-lg">
+                "{input}"
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center gap-2 max-w-md mx-auto">
           <Button
-            variant={isListening ? 'destructive' : 'outline'}
+            variant={isListening ? 'destructive' : 'default'}
             size="icon"
-            className="w-12 h-12 rounded-full flex-shrink-0"
+            className={`w-14 h-14 rounded-full flex-shrink-0 transition-all ${
+              isListening ? 'animate-pulse scale-110' : 'hover:scale-105'
+            }`}
             onClick={toggleListening}
           >
             {isListening ? (
-              <MicOff className="w-5 h-5" />
+              <MicOff className="w-6 h-6" />
             ) : (
-              <Mic className="w-5 h-5" />
+              <Mic className="w-6 h-6" />
             )}
           </Button>
 
@@ -216,25 +295,20 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder={t('ask_anything')}
+            placeholder={language === 'hi' ? 'यहां टाइप करें...' : 'Type here...'}
             className="h-12 rounded-full px-5"
+            disabled={isListening}
           />
 
           <Button
             size="icon"
-            className="w-12 h-12 rounded-full flex-shrink-0"
+            className="w-14 h-14 rounded-full flex-shrink-0"
             onClick={handleSend}
-            disabled={!input.trim() || isLoading}
+            disabled={!input.trim() || isLoading || isListening}
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-6 h-6" />
           </Button>
         </div>
-
-        {isListening && (
-          <p className="text-center text-sm text-primary mt-3 animate-pulse">
-            🎤 {t('listening')}
-          </p>
-        )}
       </div>
     </div>
   );
