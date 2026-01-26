@@ -88,6 +88,9 @@ const translations: Record<Language, Record<string, string>> = {
     'view_details': 'View Details',
     'apply_now': 'Apply Now',
     'learn_more': 'Learn More',
+    'home': 'Home',
+    'profile': 'Profile',
+    'logout': 'Logout',
   },
   hi: {
     'select_language': 'अपनी भाषा चुनें',
@@ -147,6 +150,9 @@ const translations: Record<Language, Record<string, string>> = {
     'view_details': 'विवरण देखें',
     'apply_now': 'अभी आवेदन करें',
     'learn_more': 'और जानें',
+    'home': 'होम',
+    'profile': 'प्रोफ़ाइल',
+    'logout': 'लॉगआउट',
   },
   mr: {
     'select_language': 'तुमची भाषा निवडा',
