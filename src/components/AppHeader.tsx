@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'lucide-react';
-import kisanMitrLogo from '@/assets/kisanmitr-logo.png';
+import kisanMitrLogo from '@/assets/kisanmitr-logo-new.png';
 
 interface AppHeaderProps {
   title?: string;
