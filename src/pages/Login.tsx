@@ -6,6 +6,7 @@ import { Mail, Lock, Eye, EyeOff, Sprout, Copy, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import kisanMitrLogo from '@/assets/kisanmitr-logo-new.png';
 
 const DEMO_EMAIL = 'farmer.demo@krushiai.app';
 const DEMO_PASSWORD = 'Demo@123';
@@ -60,9 +61,11 @@ const Login: React.FC = () => {
       <div className="flex-1 flex flex-col items-center justify-center max-w-md mx-auto w-full">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <Sprout className="w-12 h-12 text-primary-foreground" />
-          </div>
+          <img 
+            src={kisanMitrLogo} 
+            alt="KisanMitr Logo" 
+            className="w-28 h-28 mx-auto mb-4 object-contain drop-shadow-lg"
+          />
           <h1 className="text-2xl font-bold text-foreground mb-2">
             {t('welcome_back')}
           </h1>
