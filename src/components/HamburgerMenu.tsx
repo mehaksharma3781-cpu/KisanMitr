@@ -7,6 +7,7 @@ import {
   TrendingUp, Cloud, Sparkles, X, LogOut 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { playClickSound } from '@/hooks/useClickSound';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -31,11 +32,13 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   ];
 
   const handleNavigation = (path: string) => {
+    playClickSound();
     navigate(path);
     onClose();
   };
 
   const handleLogout = () => {
+    playClickSound();
     logout();
     onClose();
     navigate('/login');
