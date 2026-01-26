@@ -1,6 +1,5 @@
 import React from 'react';
 import { Menu, Sprout } from 'lucide-react';
-import useSoundEffect from '@/hooks/useSoundEffect';
 
 interface AppHeaderProps {
   title?: string;
@@ -15,21 +14,14 @@ const AppHeader: React.FC<AppHeaderProps> = ({
   onMenuClick,
   rightElement 
 }) => {
-  const { playSound } = useSoundEffect();
-
-  const handleMenuClick = () => {
-    playSound('swoosh');
-    onMenuClick();
-  };
-
   return (
     <header className="bg-primary text-primary-foreground px-4 py-4">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Hamburger Menu Button */}
           <button
-            onClick={handleMenuClick}
-            className="w-12 h-12 rounded-xl bg-primary-foreground/20 flex items-center justify-center hover:bg-primary-foreground/30 transition-colors active:scale-95"
+            onClick={onMenuClick}
+            className="w-12 h-12 rounded-xl bg-primary-foreground/20 flex items-center justify-center hover:bg-primary-foreground/30 transition-colors"
             aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />

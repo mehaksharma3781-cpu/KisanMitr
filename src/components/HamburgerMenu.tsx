@@ -7,7 +7,6 @@ import {
   TrendingUp, Cloud, Sparkles, X, LogOut 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import useSoundEffect from '@/hooks/useSoundEffect';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -19,7 +18,6 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { playSound } = useSoundEffect();
 
   const menuItems = [
     { id: 'home', path: '/dashboard', icon: Home, label: t('home') || 'Home', color: 'bg-primary' },
@@ -33,13 +31,11 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
   ];
 
   const handleNavigation = (path: string) => {
-    playSound('click');
     navigate(path);
     onClose();
   };
 
   const handleLogout = () => {
-    playSound('swoosh');
     logout();
     onClose();
     navigate('/login');

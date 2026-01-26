@@ -11,13 +11,11 @@ import AppLayout from '@/components/AppLayout';
 import WeatherAlert from '@/components/WeatherAlert';
 import CropCard from '@/components/CropCard';
 import SchemeCard from '@/components/SchemeCard';
-import useSoundEffect from '@/hooks/useSoundEffect';
 
 const Home: React.FC = () => {
   const { t } = useLanguage();
   const { profile } = useAuth();
   const navigate = useNavigate();
-  const { playSound } = useSoundEffect();
 
   const quickActions = [
     { id: 'crop', icon: Sprout, label: t('crop_advisor'), color: 'bg-primary', path: '/crop-advisor' },
@@ -79,11 +77,8 @@ const Home: React.FC = () => {
           {quickActions.map((action) => (
             <button 
               key={action.id} 
-              className="icon-btn animate-scale-in active:scale-95 transition-transform"
-              onClick={() => {
-                playSound('pop');
-                navigate(action.path);
-              }}
+              className="icon-btn animate-scale-in"
+              onClick={() => navigate(action.path)}
             >
               <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center`}>
                 <action.icon className="w-6 h-6 text-white" />
