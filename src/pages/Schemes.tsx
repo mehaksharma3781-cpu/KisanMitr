@@ -4,6 +4,7 @@ import { FileText, Filter, CheckCircle, AlertTriangle, XCircle, IndianRupee } fr
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/AppLayout';
 import SchemeCard from '@/components/SchemeCard';
+import { playClickSound } from '@/hooks/useClickSound';
 
 const Schemes: React.FC = () => {
   const { t } = useLanguage();
@@ -142,7 +143,10 @@ const Schemes: React.FC = () => {
               variant={activeFilter === filter.id ? "default" : "outline"}
               size="sm"
               className="flex items-center gap-2 whitespace-nowrap"
-              onClick={() => setActiveFilter(filter.id as any)}
+              onClick={() => {
+                playClickSound();
+                setActiveFilter(filter.id as any);
+              }}
             >
               <filter.icon className="w-4 h-4" />
               {filter.label} ({counts[filter.id as keyof typeof counts]})

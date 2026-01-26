@@ -11,6 +11,7 @@ import AppLayout from '@/components/AppLayout';
 import WeatherAlert from '@/components/WeatherAlert';
 import CropCard from '@/components/CropCard';
 import SchemeCard from '@/components/SchemeCard';
+import { playClickSound } from '@/hooks/useClickSound';
 
 const Home: React.FC = () => {
   const { t } = useLanguage();
@@ -78,7 +79,10 @@ const Home: React.FC = () => {
             <button 
               key={action.id} 
               className="icon-btn animate-scale-in"
-              onClick={() => navigate(action.path)}
+              onClick={() => {
+                playClickSound();
+                navigate(action.path);
+              }}
             >
               <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center`}>
                 <action.icon className="w-6 h-6 text-white" />
