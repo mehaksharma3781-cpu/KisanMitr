@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Sprout } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import kisanMitrLogo from '@/assets/kisanmitr-logo.png';
 
 interface AppHeaderProps {
   title?: string;
@@ -8,7 +9,7 @@ interface AppHeaderProps {
   rightElement?: React.ReactNode;
 }
 
-const AppHeader: React.FC<AppHeaderProps> = ({ 
+const AppHeader: React.FC<AppHeaderProps> = ({
   title = 'KisanMitr', 
   subtitle,
   onMenuClick,
@@ -28,9 +29,11 @@ const AppHeader: React.FC<AppHeaderProps> = ({
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-              <Sprout className="w-5 h-5" />
-            </div>
+            <img 
+              src={kisanMitrLogo} 
+              alt="KisanMitr Logo" 
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <div>
               <h1 className="font-bold text-lg">{title}</h1>
               {subtitle && (
