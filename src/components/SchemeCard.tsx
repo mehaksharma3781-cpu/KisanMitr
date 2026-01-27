@@ -8,9 +8,10 @@ interface SchemeCardProps {
     name: string;
     description: string;
     status: 'ready' | 'missing_docs' | 'not_eligible';
-    amount?: number;
-    missingDocs?: string[];
+    amount?: number | null;
+    missingDocs?: string[] | null;
     deadline: string;
+    official_url: string;
   };
 }
 
@@ -91,6 +92,7 @@ const SchemeCard: React.FC<SchemeCardProps> = ({ scheme }) => {
           size="sm" 
           variant={scheme.status === 'ready' ? 'default' : 'outline'}
           className="h-9"
+          onClick={() => window.open(scheme.official_url, '_blank', 'noopener,noreferrer')}
         >
           {scheme.status === 'ready' ? t('apply_now') : t('view_details')}
           <ChevronRight className="w-4 h-4 ml-1" />

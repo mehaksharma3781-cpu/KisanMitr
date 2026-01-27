@@ -1,70 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { FileText, Filter, CheckCircle, AlertTriangle, XCircle, IndianRupee } from 'lucide-react';
+import { FileText, Filter, CheckCircle, AlertTriangle, XCircle, IndianRupee, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/components/AppLayout';
 import SchemeCard from '@/components/SchemeCard';
 import { playClickSound } from '@/hooks/useClickSound';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Scheme {
+  id: string;
+  name: string;
+  description: string;
+  status: 'ready' | 'missing_docs' | 'not_eligible';
+  amount: number | null;
+  missing_docs: string[] | null;
+  deadline: string;
+  official_url: string;
+}
 
 const Schemes: React.FC = () => {
   const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'ready' | 'missing_docs' | 'not_eligible'>('all');
+  const [allSchemes, setAllSchemes] = useState<Scheme[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const allSchemes = [
-    {
-      name: 'PM-KISAN',
-      description: 'Direct income support of ₹6000/year to farmer families',
-      status: 'ready' as const,
-      amount: 6000,
-      deadline: '15 Feb 2024',
-    },
-    {
-      name: 'PMFBY',
-      description: 'Pradhan Mantri Fasal Bima Yojana - Crop insurance',
-      status: 'missing_docs' as const,
-      missingDocs: ['Land Record', 'Bank Statement'],
-      deadline: '28 Feb 2024',
-    },
-    {
-      name: 'Soil Health Card',
-      description: 'Free soil testing and nutrient recommendations',
-      status: 'ready' as const,
-      deadline: 'Open',
-    },
-    {
-      name: 'PM-KUSUM',
-      description: 'Solar pump subsidy for irrigation',
-      status: 'ready' as const,
-      amount: 50000,
-      deadline: '31 Mar 2024',
-    },
-    {
-      name: 'Kisan Credit Card',
-      description: 'Low-interest loans for agricultural expenses',
-      status: 'missing_docs' as const,
-      missingDocs: ['Income Certificate'],
-      deadline: 'Ongoing',
-    },
-    {
-      name: 'eNAM',
-      description: 'National Agriculture Market - Sell crops online',
-      status: 'not_eligible' as const,
-      deadline: 'Ongoing',
-    },
-    {
-      name: 'PKVY',
-      description: 'Paramparagat Krishi Vikas Yojana - Organic farming',
-      status: 'ready' as const,
-      amount: 31000,
-      deadline: '15 Apr 2024',
-    },
-    {
-      name: 'RKVY',
-      description: 'Rashtriya Krishi Vikas Yojana - Agricultural development',
-      status: 'not_eligible' as const,
-      deadline: '30 Apr 2024',
-    },
-  ];
+  useEffect(() => {
+    const fetchSchemes = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('government_schemes')
+          .select('*')
+          .order('name');
+        
+        if (error) throw error;
+        
+        // Cast status to the correct union type
+        const typedData = (data || []).map(scheme => ({
+          ...scheme,
+          status: scheme.status as 'ready' | 'missing_docs' | 'not_eligible'
+        }));
+        setAllSchemes(typedData);
+      } catch (error) {
+        console.error('Error fetching schemes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchemes();
+  }, []);
 
   const filters = [
     { id: 'all', label: 'All Schemes', icon: Filter },
@@ -76,6 +60,17 @@ const Schemes: React.FC = () => {
   const filteredSchemes = activeFilter === 'all' 
     ? allSchemes 
     : allSchemes.filter(scheme => scheme.status === activeFilter);
+
+  // Transform scheme data for SchemeCard component
+  const transformScheme = (scheme: Scheme) => ({
+    name: scheme.name,
+    description: scheme.description,
+    status: scheme.status,
+    amount: scheme.amount,
+    missingDocs: scheme.missing_docs,
+    deadline: scheme.deadline,
+    official_url: scheme.official_url,
+  });
 
   const getCounts = () => ({
     all: allSchemes.length,
@@ -155,13 +150,19 @@ const Schemes: React.FC = () => {
         </div>
 
         {/* Scheme List */}
-        <div className="grid gap-3 sm:grid-cols-2">
-          {filteredSchemes.map((scheme, index) => (
-            <SchemeCard key={index} scheme={scheme} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2">
+            {filteredSchemes.map((scheme) => (
+              <SchemeCard key={scheme.id} scheme={transformScheme(scheme)} />
+            ))}
+          </div>
+        )}
 
-        {filteredSchemes.length === 0 && (
+        {!loading && filteredSchemes.length === 0 && (
           <div className="text-center py-12">
             <FileText className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">No schemes found for this filter</p>

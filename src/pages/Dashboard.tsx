@@ -66,6 +66,7 @@ const Dashboard: React.FC = () => {
       status: 'ready' as const,
       amount: 6000,
       deadline: '15 Feb 2024',
+      official_url: 'https://pmkisan.gov.in/',
     },
     {
       name: 'PMFBY',
@@ -73,12 +74,14 @@ const Dashboard: React.FC = () => {
       status: 'missing_docs' as const,
       missingDocs: ['Land Record', 'Bank Statement'],
       deadline: '28 Feb 2024',
+      official_url: 'https://pmfby.gov.in/',
     },
     {
       name: 'Soil Health Card',
       description: 'Free soil testing and recommendations',
       status: 'ready' as const,
       deadline: 'Open',
+      official_url: 'https://soilhealth.dac.gov.in/',
     },
   ];
 
