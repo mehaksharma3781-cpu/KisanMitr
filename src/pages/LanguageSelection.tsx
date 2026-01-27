@@ -1,16 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
-import { Check, Globe } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import kisanMitrLogo from '@/assets/kisanmitr-logo-new.png';
 
-const languages: { code: Language; name: string; native: string; flag: string }[] = [
-  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'mr', name: 'Marathi', native: 'मराठी', flag: '🇮🇳' },
-  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', flag: '🇮🇳' },
-  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
-  { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
+const languages: { code: Language; name: string; native: string }[] = [
+  { code: 'en', name: 'English', native: 'English' },
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+  { code: 'mr', name: 'Marathi', native: 'मराठी' },
+  { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
+  { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
+  { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
 ];
 
 const LanguageSelection: React.FC = () => {
@@ -26,9 +27,11 @@ const LanguageSelection: React.FC = () => {
       <div className="flex-1 flex flex-col items-center justify-center max-w-md mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Globe className="w-10 h-10 text-primary" />
-          </div>
+          <img 
+            src={kisanMitrLogo} 
+            alt="KisanMitr Logo" 
+            className="w-24 h-24 mx-auto mb-4 rounded-full object-cover shadow-lg border-4 border-primary/20"
+          />
           <h1 className="text-2xl font-bold text-foreground mb-2">
             {t('select_language')}
           </h1>
@@ -45,7 +48,6 @@ const LanguageSelection: React.FC = () => {
               onClick={() => setLanguage(lang.code)}
               className={`lang-card w-full ${language === lang.code ? 'selected' : ''}`}
             >
-              <span className="text-3xl">{lang.flag}</span>
               <div className="flex-1 text-left">
                 <p className="font-semibold text-foreground">{lang.native}</p>
                 <p className="text-sm text-muted-foreground">{lang.name}</p>
