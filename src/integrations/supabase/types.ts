@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      government_schemes: {
+        Row: {
+          amount: number | null
+          created_at: string
+          deadline: string
+          description: string
+          id: string
+          missing_docs: string[] | null
+          name: string
+          official_url: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          deadline: string
+          description: string
+          id?: string
+          missing_docs?: string[] | null
+          name: string
+          official_url: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          deadline?: string
+          description?: string
+          id?: string
+          missing_docs?: string[] | null
+          name?: string
+          official_url?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -57,6 +57,7 @@ const Home: React.FC = () => {
       status: 'ready' as const,
       amount: 6000,
       deadline: '15 Feb 2024',
+      official_url: 'https://pmkisan.gov.in/',
     },
     {
       name: 'PMFBY',
@@ -64,6 +65,7 @@ const Home: React.FC = () => {
       status: 'missing_docs' as const,
       missingDocs: ['Land Record'],
       deadline: '28 Feb 2024',
+      official_url: 'https://pmfby.gov.in/',
     },
   ];
 
