@@ -73,7 +73,6 @@ const HamburgerMenu: React.FC<HamburgerMenuProps> = ({ isOpen, onClose }) => {
             />
             <div>
               <h2 className="font-bold text-lg">KisanMitr</h2>
-              <p className="text-xs text-primary-foreground/70">{t('ai_prototype')}</p>
             </div>
           </div>
           <button
